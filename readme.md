@@ -1,5 +1,7 @@
 # Noise-Resilient Training Method For Face Landmark Generation From Speech
 
+The code for the following [paper](https://ieeexplore.ieee.org/document/8871109).
+
 You can find the project page [here](http://www2.ece.rochester.edu/projects/air/projects/3Dtalkingface.html).
 
 ## Installation
@@ -13,6 +15,8 @@ pip install -r requirements.txt
 * ffmpeg --- 3.4.1
 
 The code has been tested on Ubuntu 16.04 and OS X Sierra and High Sierra. 
+
+* Note that the new versions of the PyTorch will yield different results due to numerical differences.
 
 ## Code Example
 

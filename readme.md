@@ -84,3 +84,18 @@ Autoregressive noise-resilient model training:
 ```
 python train.py -i path-to-hdf5-train-file/ -n path-to-hdf5-noise-file/ --temporal_condition -o output-folder-to-save-model-file
 ```
+
+## Citation
+
+```
+@ARTICLE{seeskimeznr3dtface,
+         author={S. E. {Eskimez} and R. K. {Maddox} and C. {Xu} and Z. {Duan}},
+         journal={IEEE/ACM Transactions on Audio, Speech, and Language Processing},
+         title={Noise-Resilient Training Method for Face Landmark Generation From Speech},
+         year={2020},
+         volume={28},
+         pages={27-38},
+         doi={10.1109/TASLP.2019.2947741},
+         ISSN={2329-9304}
+}
+```

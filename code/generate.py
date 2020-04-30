@@ -22,7 +22,7 @@ parser.add_argument("-o", "--out-fold", type=str, help="output folder", required
 
 parser.add_argument("--mean_shape", type=str, help="PCA mean shape vector npy file path", default="../data/mean_shape.npy")
 parser.add_argument("--eigen_vectors", type=str, help="PCA eigen vectors npy file path", default="../data/eigen_vectors.npy")
-parser.add_argument("--template_shape", type=str, help="PCA eigen vectors npy file path", default="../data/mean.npy")
+parser.add_argument("--template_shape", type=str, help="Template face npy file path", default="../data/mean.npy")
 parser.add_argument("-n", "--num-frames", type=int, help="Number of frames", default=7)
 parser.add_argument("--temporal_condition", action="store_true")
 parser.add_argument("--tcboost", type=str, help="Boost coefficients for autoregressive model", default="../data/tcboost.npy")

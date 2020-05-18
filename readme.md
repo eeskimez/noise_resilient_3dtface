@@ -26,6 +26,8 @@ The generation code has the following arguments:
     * See [this](http://librosa.github.io/librosa/generated/librosa.core.load.html#librosa.core.load) link for supported audio formats.
 * -m --- Input pre-trained talking face landmarks model 
 * -o --- Output path
+* `-s --save_prediction` save the predicted landmarks and speech array in the folder specified by the `-o` option and disable generation of animation
+* `-l --load_prediction` load predictions from the folder specified by the `-i` option and generate a painted face animation in the folder specified by the `-o` option. This option expects the input folder to contain pairs of files with the same name but different extensions - `.wav` and `.npy`
 
 You can run the following code to test the system:
 
@@ -40,6 +42,14 @@ python generate.py -i ../speech_samples/ -m ../pre_trained/1D_CNN_NR.pt -o ../re
 ```
 python generate.py -i ../speech_samples/ -m ../pre_trained/1D_CNN_TC.pt -o ../results/1D_CNN_TC/ --temporal_condition
 ```
+Save the landmarks predicted and speech vector using the [ID_CNN](pre_trained/1D_CNN.pt) model from audio in `../speech_samples/` to an [NPY format](https://numpy.org/doc/stable/reference/generated/numpy.lib.format.html#module-numpy.lib.format) file in `replic/pred_out/`
+
+    python generate.py -i ../speech_samples/ -m ../pre_trained/1D_CNN.pt -o ../replic/pred_out/ -s  
+
+Load landmarks from external files in `replic/samples/identity_removed/` and generate animation in `replic/anim_out/`
+
+    python generate.py -i ../replic/samples/identity_removed/ -m ../pre_trained/1D_CNN.pt -o ../replic/anim_out/ -l
+
 ## Face landmarks Extraction from Videos
 
 Please see the following links for extracting face landmarks:

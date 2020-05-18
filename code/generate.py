@@ -1,13 +1,10 @@
 import argparse
-import math
 import os
-import random as rn
 import shutil
-import subprocess
+from pathlib import Path
 
 import librosa
 import numpy as np
-from tqdm import tqdm
 from plot_face import facePainter
 from scipy.spatial import procrustes
 import torch
@@ -16,7 +13,7 @@ from copy import deepcopy
 from model import SPCH2FLM, SPCH2FLMTC
 
 parser = argparse.ArgumentParser(description=__doc__)
-parser.add_argument("-i", "--in-folder", type=str, help="input speech folder", required=True)
+parser.add_argument("-i", "--in-folder", type=str, help="input speech folder and optionally the prediction file if -l used", required=True)
 parser.add_argument("-m", "--model", type=str, help="Pre-trained model", required=True)
 parser.add_argument("-o", "--out-fold", type=str, help="output folder", required=True)
 
@@ -26,6 +23,12 @@ parser.add_argument("--template_shape", type=str, help="Template face npy file p
 parser.add_argument("-n", "--num-frames", type=int, help="Number of frames", default=7)
 parser.add_argument("--temporal_condition", action="store_true")
 parser.add_argument("--tcboost", type=str, help="Boost coefficients for autoregressive model", default="../data/tcboost.npy")
+parser.add_argument("-s", "--save_prediction", help='Save prediction in the'
+                    ' output folder and disable creation of animation',
+                    action="store_true")
+parser.add_argument("-l", "--load_prediction", help='Load prediction'
+                    ' file from the input speech folder and generate painted animation',
+                    action="store_true")
 
 args = parser.parse_args()
 pca_mean_vector = np.load(args.mean_shape)
@@ -44,7 +47,6 @@ def generateFace(root, filename):
     speech = librosa.resample(speech, sr, fs)
 
     increment = int(0.04*fs) # Increment rate for 25 FPS videos
-    upper_limit = speech.shape[0]
     lower = 0
     predicted = np.zeros((0, pca_mean_vector.shape[1]))
     flag = 0
@@ -86,12 +88,33 @@ def generateFace(root, filename):
     if len(predicted.shape) < 3:
         predicted = np.reshape(predicted, (predicted.shape[0], int(predicted.shape[1]/3), 3))
 
+    if args.save_prediction:
+        save_prediction(filename, predicted, speech_orig)
+        return
+    if args.load_prediction:
+        predicted = load_prediction(filename)
+
     # 2D video with painted face
     fp = facePainter(predicted, speech_orig, fs=sr)
     fp.paintFace(output_path, os.path.splitext(filename)[0]+'_painted')
 
+    if predicted.shape[2] < 3: #exit loop if coordinates have less than 3 dimensions
+        return
+
     # 3D video with connected lines
     utils.write_video3D(predicted, speech_orig, sr, output_path, os.path.splitext(filename)[0]+'_3D', [-0.2, 0.2], [-0.2, 0.2], [-0.2, 0.2], 25)
+
+def save_prediction(file_name, predicted, speech_orig):
+    """ save predicted landmarks and speech vector to the output folder """
+    out_dir = Path(args.out_fold, file_name)
+    out_dir.mkdir(parents=True, exist_ok=True)
+    np.save(out_dir.joinpath('predicted.npy'), predicted)
+    np.save(out_dir.joinpath('speech_orig.npy'), speech_orig)
+
+def load_prediction(file_name):
+    """ load predicted landmarks from the input speech folder """
+    prediction_file = Path(args.in_folder, Path(file_name).with_suffix('.npy'))
+    return np.load(prediction_file)
 
 output_path = args.out_fold
 num_frames = args.num_frames 

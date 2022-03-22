@@ -22,7 +22,7 @@ networkx==2.2
 numba==0.43.1
 numpy==1.16.3
 olefile==0.46
-opencv-python==4.1.0.25
+opencv-python==4.2.0.32
 Pillow==9.0.1
 pycparser==2.19
 pyparsing==2.4.0

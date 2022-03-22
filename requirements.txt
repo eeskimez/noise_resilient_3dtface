@@ -5,7 +5,7 @@ cffi==1.12.3
 cloudpickle==0.8.1
 cpbd==1.0.7
 cycler==0.10.0
-dask==1.2.0
+dask==2021.10.0
 decorator==4.4.0
 dlib==19.17.0
 enum34==1.1.6

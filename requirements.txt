@@ -20,7 +20,7 @@ mkl-fft==1.0.10
 mkl-random==1.0.2
 networkx==2.2
 numba==0.43.1
-numpy==1.16.3
+numpy==1.22.0
 olefile==0.46
 opencv-python==4.1.0.25
 Pillow==9.0.1

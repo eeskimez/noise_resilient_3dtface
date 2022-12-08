@@ -1,6 +1,6 @@
 audioread==2.1.6
 backports.functools-lru-cache==1.5
-certifi==2019.3.9
+certifi==2022.12.7
 cffi==1.12.3
 cloudpickle==0.8.1
 cpbd==1.0.7
